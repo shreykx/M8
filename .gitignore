@@ -1,0 +1,15 @@
+# Virtual environment
+env/
+venv/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# IDE settings
+.vscode/
+.idea/
+
+# Logs and databases
+*.log
+*.sqlite3

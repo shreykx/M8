@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="POST">
+        <a href="/page/home">back</a>
+        <input type="text" name="" placeholder="type your username" id="username">
+        <input type="password" name="" placeholder="type your password" id="password">
+        <input type="checkbox" onclick="togglePasswordView()"> Show Password
+        <script>
+            function togglePasswordView() {
+                var passwordField = document.getElementById("password");
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                } else {
+                    passwordField.type = "password";
+                }
+            }
+        </script>
+        <button type="button" onclick="makePostRequest()">Login</button>
+
+        <span id="status" style="color: black;">Here you'll see the status of your function</span>
+        <script>
+            function makePostRequest() {
+                let username = document.getElementById("username")
+                let password = document.getElementById("password")
+
+                if (!username || !password) {
+                    console.error('Username or password elements not found');
+                    return;
+                }
+
+                if (!username.value || !password.value) {
+                    console.error('Username and password are required');
+                    return;
+                }
+
+                fetch('/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type: "authenticate",
+                        username: username.value,
+                        password: password.value
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // successful login
+                        document.getElementById('status').innerText = 'Successful!';
+                        document.getElementById('status').style.color = 'green';
+                    } else {
+                        // not a successful login
+                        document.getElementById('status').innerText = 'Unsuccessful!';
+                        document.getElementById('status').style.color = 'red';
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        </script>
+
+    </form>
+</body>
+</html>
